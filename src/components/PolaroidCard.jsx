@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Play, Maximize2 } from 'lucide-react';
 import { tapeVariants, rotations, formatDate } from '../data/memories';
 import FloatingComments from './FloatingComments';
 
@@ -25,7 +25,7 @@ const badgePalette = [
   'bg-neutral-100 text-neutral-500 border-neutral-200',
 ];
 
-export default function PolaroidCard({ memory, index, onEdit, onAddComment, categories }) {
+export default function PolaroidCard({ memory, index, onEdit, onAddComment, categories, onZoom }) {
   const tape = tapeVariants[index % tapeVariants.length];
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -43,11 +43,16 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
     onEdit(memory);
   };
 
+  const handleCardClick = () => {
+    if (onZoom) onZoom(memory);
+  };
+
   return (
     <div className="relative w-full">
       <motion.article
         id={`memory-${memory.id}`}
-        className="polaroid mx-auto group relative select-none"
+        onClick={handleCardClick}
+        className="polaroid mx-auto group relative select-none cursor-pointer"
         style={{ width: '100%' }}
         custom={index}
         variants={cardVariants}
@@ -58,6 +63,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
           rotate: 0,
           transition: { duration: 0.2, ease: 'easeOut' },
         }}
+        whileTap={{ scale: 0.98 }}
         viewport={{ once: true, margin: '60px' }}
         aria-label={`Kenangan: ${memory.title}`}
       >
@@ -65,7 +71,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
         <div className={`${tape.className} ${tape.color}`} />
 
         {/* Three-dot menu */}
-        <div className="absolute top-3 right-3 z-20">
+        <div className="absolute top-3 right-3 z-20" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={handleMenuClick}
             className="w-7 h-7 rounded-full flex items-center justify-center bg-black/25 text-white backdrop-blur-sm transition-all duration-200 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-black/40"
@@ -94,20 +100,27 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
           )}
         </div>
 
-        {/* Media */}
+        {/* Media Thumbnail */}
         <div
-          className="relative overflow-hidden bg-zinc-100"
+          className="relative overflow-hidden bg-zinc-100 group/media"
           style={{ aspectRatio: '4/3' }}
         >
           {memory.type === 'video' ? (
-            <video
-              src={memory.mediaUrl}
-              controls
-              preload="metadata"
-              playsInline
-              className="w-full h-full object-cover bg-zinc-900"
-              aria-label={memory.title}
-            />
+            <div className="w-full h-full relative bg-zinc-900 flex items-center justify-center">
+              <video
+                src={`${memory.mediaUrl}#t=0.1`}
+                preload="metadata"
+                muted
+                playsInline
+                className="w-full h-full object-cover pointer-events-none opacity-85"
+                aria-label={memory.title}
+              />
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-white/90 text-zinc-800 flex items-center justify-center shadow-md group-hover/media:scale-110 transition-transform">
+                  <Play size={15} className="ml-0.5 fill-zinc-800 text-zinc-800" />
+                </div>
+              </div>
+            </div>
           ) : (
             <img
               src={memory.mediaUrl}
@@ -118,13 +131,22 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
             />
           )}
 
+          {/* Hover zoom indicator */}
+          <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+            <span className="p-1.5 rounded-full bg-white/85 backdrop-blur-xs text-zinc-700 shadow-sm">
+              <Maximize2 size={13} />
+            </span>
+          </div>
+
           <div className="absolute top-2 left-2 pointer-events-none">
             <span className="date-stamp">{formatDate(memory.uploadDate)}</span>
           </div>
 
           {memory.type === 'video' && (
             <div className="absolute bottom-2 left-2 pointer-events-none">
-              <span className="date-stamp text-xs">video</span>
+              <span className="date-stamp text-xs flex items-center gap-1">
+                <Play size={8} className="fill-white" /> video
+              </span>
             </div>
           )}
         </div>
@@ -144,7 +166,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
       </motion.article>
 
       {/* Comments outside polaroid */}
-      <div className="px-2">
+      <div className="px-2" onClick={(e) => e.stopPropagation()}>
         <FloatingComments
           memoryId={memory.id}
           comments={memory.comments || []}

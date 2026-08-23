@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import PolaroidCard from './PolaroidCard';
+import PhotoLightboxModal from './PhotoLightboxModal';
 
 export default function TimelineFeed({ memories, activeFilter, categories, onEdit, onAddComment }) {
+  const [zoomedMemory, setZoomedMemory] = useState(null);
+
+  const zoomedCategory = categories?.find((c) => c.id === zoomedMemory?.categoryId);
+
   return (
     <section id="timeline-feed" className="px-3 sm:px-4 py-6">
       {/* Section label */}
@@ -53,6 +59,7 @@ export default function TimelineFeed({ memories, activeFilter, categories, onEdi
                       onEdit={onEdit}
                       onAddComment={onAddComment}
                       categories={categories}
+                      onZoom={setZoomedMemory}
                     />
                   </div>
                 ))}
@@ -61,6 +68,15 @@ export default function TimelineFeed({ memories, activeFilter, categories, onEdi
           )}
         </motion.div>
       </AnimatePresence>
+
+      {/* Full-screen Lightbox Zoom Modal (mounted via Portal) */}
+      <PhotoLightboxModal
+        memory={zoomedMemory}
+        isOpen={Boolean(zoomedMemory)}
+        onClose={() => setZoomedMemory(null)}
+        onAddComment={onAddComment}
+        category={zoomedCategory}
+      />
     </section>
   );
 }
