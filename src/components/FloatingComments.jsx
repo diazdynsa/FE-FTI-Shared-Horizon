@@ -4,19 +4,18 @@ import { MessageCircle, Send, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { stickyColors, colorCycle, stickyRotations } from '../data/memories';
 
 const noteVariants = {
-  hidden: { opacity: 0, scale: 0.6, y: 12 },
+  hidden: { opacity: 0, scale: 0.8, y: 8 },
   visible: (i) => ({
     opacity: 1,
     scale: 1,
     y: 0,
     transition: {
-      type: 'spring',
-      stiffness: 260,
-      damping: 20,
-      delay: i * 0.08,
+      duration: 0.2,
+      ease: [0.16, 1, 0.3, 1],
+      delay: Math.min(i * 0.04, 0.2),
     },
   }),
-  exit: { opacity: 0, scale: 0.7, transition: { duration: 0.12 } },
+  exit: { opacity: 0, scale: 0.85, transition: { duration: 0.1 } },
 };
 
 export default function FloatingComments({ memoryId, comments, onAddComment }) {
@@ -37,7 +36,6 @@ export default function FloatingComments({ memoryId, comments, onAddComment }) {
     });
     setInputText('');
     setAuthorText('');
-    // keep input open so user can write more
   };
 
   // Decide how many to show
@@ -65,13 +63,12 @@ export default function FloatingComments({ memoryId, comments, onAddComment }) {
                   layout
                   style={{
                     rotate: `${rot}deg`,
-                    '--float-rot': `${rot}deg`,
                     /* Alternate indent for scattered look */
                     marginLeft: i % 2 === 0 ? '4px' : '20px',
                     marginRight: i % 2 === 0 ? '16px' : '4px',
                   }}
                 >
-                  <div className={`${colorClass} rounded-sm text-xs md:text-sm float-gentle`}>
+                  <div className={`${colorClass} rounded-sm text-xs md:text-sm shadow-xs`}>
                     <span className="font-bold text-[0.6rem] uppercase tracking-wider opacity-50 block">
                       {comment.author}
                     </span>

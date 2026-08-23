@@ -5,19 +5,24 @@ import { uploadMediaFile } from '../lib/supabase';
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  visible: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.85, y: 40, rotate: -2 },
+  hidden: { opacity: 0, scale: 0.94, y: 12 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    rotate: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 24 },
+    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
   },
-  exit: { opacity: 0, scale: 0.85, y: 30, transition: { duration: 0.18 } },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: 8,
+    transition: { duration: 0.12, ease: 'easeIn' },
+  },
 };
 
 export default function MemberDetailModal({ member, isOpen, onClose, onUpdateMember }) {
@@ -68,7 +73,7 @@ export default function MemberDetailModal({ member, isOpen, onClose, onUpdateMem
           variants={overlayVariants}
           initial="hidden"
           animate="visible"
-          exit="hidden"
+          exit="exit"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
@@ -94,7 +99,7 @@ export default function MemberDetailModal({ member, isOpen, onClose, onUpdateMem
             <div
               className="bg-white rounded-sm p-3.5 pb-8 shadow-2xl relative w-full border border-zinc-200/60"
               style={{
-                boxShadow: '0 20px 50px rgba(0,0,0,0.25), 0 8px 16px rgba(0,0,0,0.12)',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.25)',
               }}
             >
               {/* Masking tape on top */}

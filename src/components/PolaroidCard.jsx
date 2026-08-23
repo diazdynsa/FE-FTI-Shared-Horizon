@@ -6,11 +6,16 @@ import FloatingComments from './FloatingComments';
 import PhotoLightboxModal from './PhotoLightboxModal';
 
 const cardVariants = {
-  hidden: { opacity: 0, scale: 0.75, y: 60, rotate: 0 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i) => ({
-    opacity: 1, scale: 1, y: 0,
+    opacity: 1,
+    y: 0,
     rotate: rotations[i % rotations.length],
-    transition: { type: 'spring', stiffness: 100, damping: 13, delay: i * 0.08 },
+    transition: {
+      duration: 0.35,
+      ease: [0.16, 1, 0.3, 1],
+      delay: Math.min(i * 0.04, 0.25),
+    },
   }),
 };
 
@@ -44,7 +49,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
 
   return (
     <>
-      <div className="relative" style={{ width: '100%' }}>
+      <div className="relative w-full">
         <motion.article
           id={`memory-${memory.id}`}
           className="polaroid cursor-grab active:cursor-grabbing mx-auto group relative"
@@ -54,13 +59,14 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
           initial="hidden"
           whileInView="visible"
           whileHover={{
-            scale: 1.03, rotate: 0,
-            transition: { type: 'spring', stiffness: 300, damping: 20 },
+            scale: 1.02,
+            rotate: 0,
+            transition: { duration: 0.2, ease: 'easeOut' },
           }}
-          viewport={{ once: true, margin: '-30px' }}
+          viewport={{ once: true, margin: '60px' }}
           drag
           dragConstraints={{ left: -10, right: 10, top: -10, bottom: 10 }}
-          dragElastic={0.08}
+          dragElastic={0.06}
           dragTransition={{ bounceStiffness: 400, bounceDamping: 30 }}
           whileDrag={{ scale: 1.04, rotate: 0, zIndex: 50, cursor: 'grabbing' }}
           aria-label={`Kenangan: ${memory.title}`}
@@ -83,9 +89,9 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
                 <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
                 <motion.div
                   className="absolute right-0 top-9 z-20 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden min-w-[110px]"
-                  initial={{ opacity: 0, scale: 0.85, y: -8 }}
+                  initial={{ opacity: 0, scale: 0.9, y: -4 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <button
                     onClick={handleEditClick}
@@ -117,8 +123,8 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
                 />
                 {/* Clean Play Icon overlay */}
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-white/90 text-zinc-800 flex items-center justify-center shadow-lg group-hover/media:scale-110 transition-transform">
-                    <Play size={16} className="ml-0.5 fill-zinc-800 text-zinc-800" />
+                  <div className="w-9 h-9 rounded-full bg-white/90 text-zinc-800 flex items-center justify-center shadow-md group-hover/media:scale-110 transition-transform">
+                    <Play size={15} className="ml-0.5 fill-zinc-800 text-zinc-800" />
                   </div>
                 </div>
               </div>

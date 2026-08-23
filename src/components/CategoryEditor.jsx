@@ -4,16 +4,17 @@ import { X, Plus, Trash2 } from 'lucide-react';
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  visible: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.88, y: 50 },
+  hidden: { opacity: 0, scale: 0.94, y: 12 },
   visible: {
     opacity: 1, scale: 1, y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 28 },
+    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
   },
-  exit: { opacity: 0, scale: 0.88, y: 40, transition: { duration: 0.18 } },
+  exit: { opacity: 0, scale: 0.95, y: 8, transition: { duration: 0.12, ease: 'easeIn' } },
 };
 
 export default function CategoryEditor({ isOpen, onClose, categories, onSave }) {

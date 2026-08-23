@@ -1,22 +1,28 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Download } from 'lucide-react';
+import { X, Calendar } from 'lucide-react';
 import FloatingComments from './FloatingComments';
 import { formatDate } from '../data/memories';
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  visible: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.88, y: 30 },
+  hidden: { opacity: 0, scale: 0.94, y: 12 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 24 },
+    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
   },
-  exit: { opacity: 0, scale: 0.88, y: 20, transition: { duration: 0.18 } },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: 8,
+    transition: { duration: 0.12, ease: 'easeIn' },
+  },
 };
 
 export default function PhotoLightboxModal({ memory, isOpen, onClose, onAddComment, category }) {
@@ -30,7 +36,7 @@ export default function PhotoLightboxModal({ memory, isOpen, onClose, onAddComme
           variants={overlayVariants}
           initial="hidden"
           animate="visible"
-          exit="hidden"
+          exit="exit"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
@@ -56,7 +62,7 @@ export default function PhotoLightboxModal({ memory, isOpen, onClose, onAddComme
             <div
               className="bg-white rounded-xs p-3 sm:p-4 pb-6 shadow-2xl relative w-full border border-zinc-200"
               style={{
-                boxShadow: '0 25px 60px rgba(0,0,0,0.3), 0 10px 20px rgba(0,0,0,0.15)',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.25)',
               }}
             >
               {/* Masking tape on top */}

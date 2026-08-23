@@ -46,7 +46,7 @@ export default function TimelineFeed({ memories, activeFilter, categories, onEdi
               `}</style>
               <div id="masonry-grid">
                 {memories.map((memory, index) => (
-                  <div key={memory.id} className="break-inside-avoid mb-4 sm:mb-6 md:mb-8">
+                  <div key={memory.id} className="break-inside-avoid mb-4 sm:mb-6 md:mb-8 masonry-item">
                     <PolaroidCard
                       memory={memory}
                       index={index}
