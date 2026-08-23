@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MoreHorizontal, Maximize2 } from 'lucide-react';
+import { MoreHorizontal, Maximize2, Play } from 'lucide-react';
 import { tapeVariants, rotations, formatDate } from '../data/memories';
 import FloatingComments from './FloatingComments';
 import PhotoLightboxModal from './PhotoLightboxModal';
@@ -106,25 +106,36 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
             title="Klik untuk perbesar"
           >
             {memory.type === 'video' ? (
-              <video
-                src={memory.mediaUrl}
-                autoPlay muted loop playsInline
-                className="w-full h-full object-cover pointer-events-none"
-                aria-label={memory.title}
-              />
+              <div className="w-full h-full relative bg-zinc-900 flex items-center justify-center">
+                <video
+                  src={`${memory.mediaUrl}#t=0.1`}
+                  preload="metadata"
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover pointer-events-none opacity-85"
+                  aria-label={memory.title}
+                />
+                {/* Clean Play Icon overlay */}
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-white/90 text-zinc-800 flex items-center justify-center shadow-lg group-hover/media:scale-110 transition-transform">
+                    <Play size={16} className="ml-0.5 fill-zinc-800 text-zinc-800" />
+                  </div>
+                </div>
+              </div>
             ) : (
               <img
                 src={memory.mediaUrl}
                 alt={memory.title}
                 className="w-full h-full object-cover"
                 loading="lazy"
+                decoding="async"
               />
             )}
 
             {/* Hover zoom icon */}
-            <div className="absolute inset-0 bg-black/15 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-              <span className="p-1.5 rounded-full bg-white/80 backdrop-blur-xs text-zinc-700 shadow-sm">
-                <Maximize2 size={14} />
+            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+              <span className="p-1.5 rounded-full bg-white/85 backdrop-blur-xs text-zinc-700 shadow-sm">
+                <Maximize2 size={13} />
               </span>
             </div>
 
@@ -134,7 +145,9 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
 
             {memory.type === 'video' && (
               <div className="absolute bottom-2 left-2 pointer-events-none">
-                <span className="date-stamp text-xs">video</span>
+                <span className="date-stamp text-xs flex items-center gap-1">
+                  <Play size={8} className="fill-white" /> video
+                </span>
               </div>
             )}
           </div>

@@ -305,3 +305,29 @@
   border: 1px dashed rgba(180, 140, 90, 0.4);
   background-color: #fcf8f0;
 }
+
+/* ── Hide Netlify Drawer / Feedback Watermark Badge ── */
+#netlify-drawer,
+netlify-drawer,
+iframe#netlify-drawer-iframe,
+[data-netlify-deploy-id],
+.netlify-badge,
+.netlify-feedback-badge,
+[id^="netlify-drawer"],
+[class*="netlify-drawer"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+}
+
+/* ── Mobile GPU acceleration & battery optimizations ── */
+.polaroid, .modal-paper {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
