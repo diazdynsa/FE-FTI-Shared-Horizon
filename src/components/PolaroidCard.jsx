@@ -19,7 +19,6 @@ const cardVariants = {
   }),
 };
 
-// Subtle badge tones — cycle by index so any category looks good
 const badgePalette = [
   'bg-zinc-100 text-zinc-500 border-zinc-200',
   'bg-stone-100 text-stone-500 border-stone-200',
@@ -32,7 +31,6 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
   const [menuOpen, setMenuOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Look up category object by id
   const category = categories?.find((c) => c.id === memory.categoryId);
   const badgeStyle = badgePalette[index % badgePalette.length];
 
@@ -47,12 +45,17 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
     onEdit(memory);
   };
 
+  const handleCardClick = () => {
+    setIsZoomed(true);
+  };
+
   return (
     <>
       <div className="relative w-full">
         <motion.article
           id={`memory-${memory.id}`}
-          className="polaroid cursor-grab active:cursor-grabbing mx-auto group relative"
+          onClick={handleCardClick}
+          className="polaroid cursor-pointer mx-auto group relative select-none"
           style={{ width: '100%' }}
           custom={index}
           variants={cardVariants}
@@ -63,12 +66,8 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
             rotate: 0,
             transition: { duration: 0.2, ease: 'easeOut' },
           }}
+          whileTap={{ scale: 0.98 }}
           viewport={{ once: true, margin: '60px' }}
-          drag
-          dragConstraints={{ left: -10, right: 10, top: -10, bottom: 10 }}
-          dragElastic={0.06}
-          dragTransition={{ bounceStiffness: 400, bounceDamping: 30 }}
-          whileDrag={{ scale: 1.04, rotate: 0, zIndex: 50, cursor: 'grabbing' }}
           aria-label={`Kenangan: ${memory.title}`}
         >
           {/* Masking Tape */}
@@ -104,12 +103,10 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
             )}
           </div>
 
-          {/* Media (Click to zoom lightbox) */}
+          {/* Media */}
           <div
-            onClick={() => setIsZoomed(true)}
-            className="relative overflow-hidden bg-zinc-100 cursor-pointer group/media"
+            className="relative overflow-hidden bg-zinc-100 group/media"
             style={{ aspectRatio: '4/3' }}
-            title="Klik untuk perbesar"
           >
             {memory.type === 'video' ? (
               <div className="w-full h-full relative bg-zinc-900 flex items-center justify-center">
@@ -121,7 +118,6 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
                   className="w-full h-full object-cover pointer-events-none opacity-85"
                   aria-label={memory.title}
                 />
-                {/* Clean Play Icon overlay */}
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <div className="w-9 h-9 rounded-full bg-white/90 text-zinc-800 flex items-center justify-center shadow-md group-hover/media:scale-110 transition-transform">
                     <Play size={15} className="ml-0.5 fill-zinc-800 text-zinc-800" />
@@ -138,7 +134,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
               />
             )}
 
-            {/* Hover zoom icon */}
+            {/* Hover zoom indicator */}
             <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
               <span className="p-1.5 rounded-full bg-white/85 backdrop-blur-xs text-zinc-700 shadow-sm">
                 <Maximize2 size={13} />
@@ -160,10 +156,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
 
           {/* Caption + category badge */}
           <div className="pt-2 pb-0.5 px-0.5 text-center md:pt-3 md:pb-1 md:px-1">
-            <p
-              onClick={() => setIsZoomed(true)}
-              className="font-handwritten text-sm md:text-lg font-semibold text-zinc-700 leading-tight cursor-pointer hover:text-zinc-900 transition-colors"
-            >
+            <p className="font-handwritten text-sm md:text-lg font-semibold text-zinc-700 leading-tight">
               {memory.title}
             </p>
             {category && (
@@ -175,7 +168,7 @@ export default function PolaroidCard({ memory, index, onEdit, onAddComment, cate
           </div>
         </motion.article>
 
-        {/* Comments outside polaroid so they're never clipped */}
+        {/* Comments outside polaroid */}
         <div className="px-2">
           <FloatingComments
             memoryId={memory.id}

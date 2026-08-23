@@ -5,23 +5,23 @@ import { formatDate } from '../data/memories';
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.12 } },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.94, y: 12 },
+  hidden: { opacity: 0, scale: 0.72, y: 30 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
   },
   exit: {
     opacity: 0,
-    scale: 0.95,
-    y: 8,
-    transition: { duration: 0.12, ease: 'easeIn' },
+    scale: 0.75,
+    y: 20,
+    transition: { duration: 0.15, ease: 'easeIn' },
   },
 };
 
@@ -42,7 +42,7 @@ export default function PhotoLightboxModal({ memory, isOpen, onClose, onAddComme
           aria-modal="true"
         >
           <motion.div
-            className="relative flex flex-col items-center max-w-sm sm:max-w-md w-full my-auto"
+            className="relative flex flex-col items-center max-w-sm sm:max-w-md w-full my-auto origin-center"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -58,11 +58,11 @@ export default function PhotoLightboxModal({ memory, isOpen, onClose, onAddComme
               <X size={16} />
             </button>
 
-            {/* ── Big Polaroid Card ── */}
+            {/* ── Big Polaroid Card (Zoomed In) ── */}
             <div
               className="bg-white rounded-xs p-3 sm:p-4 pb-6 shadow-2xl relative w-full border border-zinc-200"
               style={{
-                boxShadow: '0 20px 50px rgba(0,0,0,0.25)',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
               }}
             >
               {/* Masking tape on top */}

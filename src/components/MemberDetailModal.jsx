@@ -5,23 +5,23 @@ import { uploadMediaFile } from '../lib/supabase';
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.12 } },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.94, y: 12 },
+  hidden: { opacity: 0, scale: 0.72, y: 30 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
   },
   exit: {
     opacity: 0,
-    scale: 0.95,
-    y: 8,
-    transition: { duration: 0.12, ease: 'easeIn' },
+    scale: 0.75,
+    y: 20,
+    transition: { duration: 0.15, ease: 'easeIn' },
   },
 };
 
@@ -79,7 +79,7 @@ export default function MemberDetailModal({ member, isOpen, onClose, onUpdateMem
           aria-modal="true"
         >
           <motion.div
-            className="relative flex flex-col items-center max-w-xs sm:max-w-sm w-full"
+            className="relative flex flex-col items-center max-w-xs sm:max-w-sm w-full origin-center"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -95,7 +95,7 @@ export default function MemberDetailModal({ member, isOpen, onClose, onUpdateMem
               <X size={16} />
             </button>
 
-            {/* ── Large Polaroid Card (Scrapbook Style) ── */}
+            {/* ── Large Polaroid Card (Scrapbook Style Zoom) ── */}
             <div
               className="bg-white rounded-sm p-3.5 pb-8 shadow-2xl relative w-full border border-zinc-200/60"
               style={{
