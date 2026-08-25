@@ -20,6 +20,7 @@
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    width: 100%;
   }
 
   body {
@@ -28,6 +29,7 @@
     color: #2d2d2d;
     min-height: 100vh;
     overflow-x: hidden;
+    width: 100%;
     /* Vintage Journal Graph Grid + Warm Vignette + Paper Grain Noise */
     background-image:
       radial-gradient(circle at 50% 50%, transparent 60%, rgba(120, 85, 45, 0.06) 100%),
@@ -41,6 +43,15 @@
   h1, h2, h3, .font-handwritten {
     font-family: 'Caveat', cursive;
   }
+}
+
+/* ── No Scrollbar Utility ── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ── Masking Tape Styles ── */
